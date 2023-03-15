@@ -4,6 +4,8 @@ import getWordFromApi from '../services/api';
 import Header from './Header';
 import Dummy from './Dummy';
 import SolutionLetters from './SolutionLetters';
+import ErrorLetters from "./ErrorLetters";
+import Form from './Form';
 
 function App() {
   const [numberOfErrors, setNumberOfErrors] = useState(0);
@@ -20,20 +22,6 @@ function App() {
       setWord(word);
     });
   }, []);
-
-  const renderErrorLetters = () => {
-    const errorLetters = userLetters.filter(
-      (letter) =>
-        word.toLocaleLowerCase().includes(letter.toLocaleLowerCase()) === false
-    );
-    return errorLetters.map((letter, index) => {
-      return (
-        <li key={index} className="letter">
-          {letter}
-        </li>
-      );
-    });
-  };
 
   const handleClickBtn = (ev) => {
     ev.preventDefault();
@@ -57,29 +45,14 @@ function App() {
       <Header className="header__title" />
       <main className="main">
         <section>
-          <SolutionLetters {word , userLetters} />
-          <div className="error">
-            <h2 className="title">Letras falladas:</h2>
-            <ul className="letters">{renderErrorLetters()}</ul>
-          </div>
-          <form className="form">
-            <label className="title" htmlFor="last-letter">
-              Escribe una letra:
-            </label>
-            <input
-              autoComplete="off"
-              className="form__input"
-              maxLength="1"
-              type="text"
-              name="last-letter"
-              id="last-letter"
-              onChange={handleChangeLastLetter}
-              value={lastLetter}
-            />
-            <button onClick={handleClickBtn} className="buttom">
-              Incrementar
-            </button>
-          </form>
+          <SolutionLetters word={word} userLetters={userLetters} />
+          <ErrorLetters word={word} userLetters={userLetters} />
+          <Form
+            className={"buttom"}
+            onClick={handleClickBtn}
+            onChange={handleChangeLastLetter}
+            lastLetter={lastLetter}
+          />
         </section>
         <Dummy className={`dummy error-${numberOfErrors}`} />
       </main>
