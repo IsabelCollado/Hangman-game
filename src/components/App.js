@@ -4,11 +4,11 @@ import getWordFromApi from '../services/api';
 import Header from './Header';
 import Dummy from './Dummy';
 import SolutionLetters from './SolutionLetters';
-import ErrorLetters from "./ErrorLetters";
+import ErrorLetters from './ErrorLetters';
 import Form from './Form';
+import Footer from './Footer';
 
 function App() {
-  const [numberOfErrors, setNumberOfErrors] = useState(0);
   const [lastLetter, setLastLetter] = useState('');
   const [word, setWord] = useState('pepino');
   // const [userLetters, setUserLetters] = useState([{},{}]);  //este es un array relleno
@@ -23,11 +23,17 @@ function App() {
     });
   }, []);
 
-  const handleClickBtn = (ev) => {
+  /* const handleClickBtn = (ev) => {
     ev.preventDefault();
     setNumberOfErrors(numberOfErrors + 1);
   };
-
+ */
+  const getNumberOfErrors = () => {
+    const errorLetters = userLetters.filter(
+      (letter) => word.includes(letter) === false
+    );
+    return errorLetters.length;
+  };
   const handleChangeLastLetter = (ev) => {
     //el valor del if tiene q ser el value en este caso, xq se coge el valor q se escribe en el input
     if (ev.target.value.search(/[a-zñáéíóúü]/i) === 0) {
@@ -47,15 +53,11 @@ function App() {
         <section>
           <SolutionLetters word={word} userLetters={userLetters} />
           <ErrorLetters word={word} userLetters={userLetters} />
-          <Form
-            className={"buttom"}
-            onClick={handleClickBtn}
-            onChange={handleChangeLastLetter}
-            lastLetter={lastLetter}
-          />
+          <Form onChange={handleChangeLastLetter} lastLetter={lastLetter} />
         </section>
-        <Dummy className={`dummy error-${numberOfErrors}`} />
+        <Dummy className={`dummy error-${getNumberOfErrors()}`} />
       </main>
+      <Footer />
     </div>
   );
 }
