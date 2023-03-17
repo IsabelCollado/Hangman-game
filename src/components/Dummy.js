@@ -1,3 +1,5 @@
+import "../styles/layout/dummy.scss"
+
 function Dummy(props) {
   return (
     <section className={props.className}>

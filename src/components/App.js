@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import '../styles/App.scss';
+import "../styles/core/variables.scss"
 import getWordFromApi from '../services/api';
 import Header from './Header';
 import Dummy from './Dummy';
@@ -7,6 +8,9 @@ import SolutionLetters from './SolutionLetters';
 import ErrorLetters from './ErrorLetters';
 import Form from './Form';
 import Footer from './Footer';
+import Options from './Options';
+import Instructions from './Instructions';
+import { Route, Routes } from 'react-router-dom';
 
 function App() {
   const [lastLetter, setLastLetter] = useState('');
@@ -48,15 +52,21 @@ function App() {
 
   return (
     <div className="page">
-      <Header className="header__title" />
+      <Header />
       <main className="main">
         <section>
-          <SolutionLetters word={word} userLetters={userLetters} />
-          <ErrorLetters word={word} userLetters={userLetters} />
-          <Form onChange={handleChangeLastLetter} lastLetter={lastLetter} />
+        <SolutionLetters word={word} userLetters={userLetters} />
+                  <ErrorLetters word={word} userLetters={userLetters} />
+                  <Form lastLetter={lastLetter} onChange={handleChangeLastLetter} />
         </section>
-        <Dummy className={`dummy error-${getNumberOfErrors()}`} />
+        <Dummy className={`dummy error-${getNumberOfErrors()}`}/>
       </main>
+      <Routes>
+            <Route path="/"
+              element=""/>
+            <Route path="/instructions" element={<Instructions />} />
+            <Route path="/options" element={<Options/>} />
+          </Routes>
       <Footer />
     </div>
   );
